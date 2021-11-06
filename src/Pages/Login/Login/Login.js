@@ -2,16 +2,18 @@ import { Button, Container, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import loginImg from '../../../images/login.png'
 import TextField from '@mui/material/TextField';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
 import UseAuth from '../../../Hooks/UseAuth/UseAuth';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
 const Login = () => {
     const [loginData, setLoginData] = useState({});
-    const { user, loginUser, loading, authError } = UseAuth();
+    const { user, loginUser, loading, authError, signInWithGoogle } = UseAuth();
+    const location = useLocation();
+    const history = useHistory();
 
-    const handleOnChange = e => {
+    const handleOnBlur = e => {
         const field = e.target.name;
         const value = e.target.value;
         const newLoginData = { ...loginData };
@@ -21,8 +23,12 @@ const Login = () => {
         console.log(newLoginData);
     }
     const handleLoginSubmit = e => {
-        loginUser(loginData.email, loginData.password);
+        loginUser(loginData.email, loginData.password, location, history);
         e.preventDefault();
+    }
+
+    const handleGoogleSignIn = e => {
+        signInWithGoogle(location, history);
     }
     return (
         <Container>
@@ -31,12 +37,12 @@ const Login = () => {
                     <Typography variant="body1" gutterBottom>Login</Typography>
                     <form onSubmit={handleLoginSubmit}>
                         <TextField sx={{ width: '75%', m: 1 }}
-                            onChange={handleOnChange}
+                            onBlur={handleOnBlur}
                             name="email"
                             id="standard-basic" label="Your Email" variant="standard" />
                         <TextField
                             sx={{ width: '75%', m: 1 }}
-                            onChange={handleOnChange}
+                            onBlur={handleOnBlur}
                             name="password"
                             id="standard-password-input"
                             label="Password"
@@ -45,6 +51,7 @@ const Login = () => {
                             variant="standard"
                         />
                         <NavLink style={{ textDecoration: 'none' }} to="/register"><Button variant="text" >New User? Please Register.</Button></NavLink>
+                        <br />
                         {
                             loading && <Box sx={{ display: 'flex' }}>
                                 <CircularProgress />
@@ -53,6 +60,7 @@ const Login = () => {
 
                         <Button type="submit" sx={{ width: '25%', m: 1 }} variant="contained">Login</Button>
                     </form>
+                    <Button onClick={handleGoogleSignIn} type="submit" sx={{ width: '25%', m: 1 }} variant="text">Google Sign in</Button>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <img style={{ width: '100%' }} src={loginImg} alt="" />

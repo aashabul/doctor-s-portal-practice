@@ -6,8 +6,6 @@ import { NavLink } from 'react-router-dom';
 import UseAuth from '../../../Hooks/UseAuth/UseAuth';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 
@@ -22,7 +20,7 @@ const Register = () => {
     });
 
 
-    const handleOnChange = e => {
+    const handleOnBlur = e => {
         const field = e.target.name;
         const value = e.target.value;
         const newLoginData = { ...loginData };
@@ -48,12 +46,12 @@ const Register = () => {
                         !loading &&
                         <form onSubmit={handleLoginSubmit}>
                             <TextField sx={{ width: '75%', m: 1 }}
-                                onChange={handleOnChange}
+                                onBlur={handleOnBlur}
                                 name="email"
                                 id="standard-basic" label="Your Email" variant="standard" />
                             <TextField
                                 sx={{ width: '75%', m: 1 }}
-                                onChange={handleOnChange}
+                                onBlur={handleOnBlur}
                                 name="password"
                                 id="standard-password-input"
                                 label="Password"
@@ -63,7 +61,7 @@ const Register = () => {
                             />
                             <TextField
                                 sx={{ width: '75%', m: 1 }}
-                                onChange={handleOnChange}
+                                onBlur={handleOnBlur}
                                 name="password2"
                                 id="standard-password2-input"
                                 label="Confirm Password"
@@ -72,7 +70,7 @@ const Register = () => {
                                 variant="standard"
                             />
                             <NavLink style={{ textDecoration: 'none' }} to="/login"><Button variant="text" >Already Registered? Please Login.</Button></NavLink>
-
+                            <br />
                             <Button type="submit" sx={{ width: '25%', m: 1 }} variant="contained">Register</Button>
                         </form>
                     }
