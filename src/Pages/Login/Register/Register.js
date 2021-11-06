@@ -2,7 +2,7 @@ import { Button, Container, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import loginImg from '../../../images/login.png'
 import TextField from '@mui/material/TextField';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import UseAuth from '../../../Hooks/UseAuth/UseAuth';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -12,6 +12,7 @@ import MuiAlert from '@mui/material/Alert';
 
 const Register = () => {
     const [loginData, setLoginData] = useState({});
+    const history = useHistory();
     const { user, registerUser, loading, authError } = UseAuth();
     const [open, setOpen] = React.useState(false);
 
@@ -34,7 +35,7 @@ const Register = () => {
             alert('password did not match');
             return;
         }
-        registerUser(loginData.email, loginData.password);
+        registerUser(loginData.email, loginData.password, loginData.name, history);
         e.preventDefault();
     }
     return (
@@ -45,6 +46,10 @@ const Register = () => {
                     {
                         !loading &&
                         <form onSubmit={handleLoginSubmit}>
+                            <TextField sx={{ width: '75%', m: 1 }}
+                                onBlur={handleOnBlur}
+                                name="name"
+                                id="standard-basic1" label="Your Name" variant="standard" />
                             <TextField sx={{ width: '75%', m: 1 }}
                                 onBlur={handleOnBlur}
                                 name="email"
